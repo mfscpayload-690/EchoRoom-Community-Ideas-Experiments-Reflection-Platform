@@ -1,8 +1,10 @@
 import express, { Request, Response } from "express";
+import ideasRoutes from "./routes/ideas.routes";
 
 const app = express();
 
 app.use(express.json());
+app.use("/ideas", ideasRoutes);
 
 app.get("/health", (_req: Request, res: Response) => {
   res.json({
