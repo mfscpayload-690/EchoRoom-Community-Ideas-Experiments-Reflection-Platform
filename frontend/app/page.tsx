@@ -1,3 +1,12 @@
+import Link from "next/link";
+
+import Header from'./components/Header';
+import Hero from './components/Hero';
+import HowItWorksCard from './components/HowItWorksCard';
+import CapabilitiesCard from './components/CapabilitiesCard';
+import Footer from './components/Footer';
+
+
 export default function Home() {
 
   const steps = [
@@ -38,6 +47,7 @@ export default function Home() {
     <main className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-emerald-50 text-gray-900">
 
       {/* Header */}
+<<<<<<< issue-1
       <header className="bg-white/80 backdrop-blur border-b">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <div>
@@ -133,6 +143,26 @@ export default function Home() {
           <span>Built during Open Source Quest</span>
         </div>
       </footer>
+=======
+
+      <Header />
+
+
+      {/* Hero */}
+      <Hero />
+
+      {/* How It Works */}
+      <HowItWorksCard />
+
+
+      {/* Capabilities */}
+      <CapabilitiesCard/>
+      
+
+      {/* Footer */}
+      <Footer/>
+      
+>>>>>>> main
 
     </main>
   );

@@ -1,8 +1,10 @@
 import express, { Request, Response } from "express";
+import ideasRoutes from "./routes/ideas.routes";
 
 const app = express();
 
 app.use(express.json());
+app.use("/ideas", ideasRoutes);
 
 app.get("/health", (_req: Request, res: Response) => {
   res.json({
@@ -12,6 +14,26 @@ app.get("/health", (_req: Request, res: Response) => {
 });
 
 const PORT = 5000;
+app.get("/experiments", (req: Request, res: Response) => {
+  res.json({
+    success: true,
+    experiments: [
+      {
+        id: 1,
+        title: "Community Clean-up Drive",
+        status: "completed",
+        outcome: "Positive participation"
+      },
+      {
+        id: 2,
+        title: "Weekly Knowledge Sharing Session",
+        status: "ongoing",
+        outcome: "High engagement"
+      }
+    ]
+  });
+});
+
 
 app.listen(PORT, () => {
   console.log(`🚀 Backend running on http://localhost:${PORT}`);
