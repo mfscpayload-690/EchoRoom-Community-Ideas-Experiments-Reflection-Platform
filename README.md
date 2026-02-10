@@ -18,7 +18,6 @@ contributors from diverse skill backgrounds.
 Every idea in EchoRoom follows a simple loop:\
 *Idea → Experiment → Outcome → Reflection → Shared Learning*
 
-
 The goal is not to “win” ideas, but to **learn from trying them**.
 
 ---
@@ -80,19 +79,57 @@ EchoRoom is intentionally designed so **all contribution types matter equally**:
 ---
 
 ## 📁 Repository Structure
-echoroom/\
-├── frontend/\
-├── backend/\
-├── docs/\
-│ ├── setup.md\
-│ ├── architecture.md\
-│ ├── workflow.md\
-│ ├── moderation.md\
-│ └── README.md\
-├── OSQ.md\
-├── ROADMAP.md\
-├── CONTRIBUTING.md\
+
+```
+
+echoroom/
+├── frontend/
+├── backend/
+├── docs/
+│ ├── setup.md
+│ ├── architecture.md
+│ ├── workflow.md
+│ ├── moderation.md
+│ └── README.md
+├── OSQ.md
+├── ROADMAP.md
+├── CONTRIBUTING.md
 └── README.md
+
+````
+
+---
+
+## ⚙️ Setup Instructions
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/<org>/echoroom.git
+cd echoroom
+````
+
+### 2. Setup frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+### 3. Setup backend
+
+```bash
+cd ../backend
+npm install
+npm run dev
+```
+
+### 4. Open in browser
+
+```
+http://localhost:3000
+```
 
 ---
 
@@ -101,12 +138,13 @@ echoroom/\
 We welcome contributors of all experience levels.
 
 Before contributing:
-- Read [CONTRIBUTING.md](CONTRIBUTING.md)
-- Follow [OSQ.md](OSQ.md) for OSQ-specific rules
-- Respect our [Code of Conduct](CODE_OF_CONDUCT.md)
+
+* Read [CONTRIBUTING.md](CONTRIBUTING.md)
+* Follow [OSQ.md](OSQ.md) for OSQ-specific rules
+* Respect our [Code of Conduct](CODE_OF_CONDUCT.md)
 
 For help, contact:
-📧 **osq@r3actr.work**
+📧 **[osq@r3actr.work](mailto:osq@r3actr.work)**
 
 ---
 
@@ -118,4 +156,3 @@ Small, thoughtful contributions are more valuable than large, rushed ones.
 ---
 
 ## Happy contributing 🚀
-

@@ -46,16 +46,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-emerald-50 text-gray-900">
 
-      {/* Header */}
-              Where Ideas Become Learning
-            </p>
-          </div>
 
-          <span className="text-sm px-4 py-2 rounded-full bg-indigo-100 text-indigo-700 font-medium">
-            OSQ Project
-          </span>
-        </div>
-      </header>
 
       {/* Hero */}
       <section className="max-w-6xl mx-auto px-6 py-12 md:py-20">
