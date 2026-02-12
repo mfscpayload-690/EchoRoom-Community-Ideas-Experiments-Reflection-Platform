@@ -1,7 +1,11 @@
 import express, { Request, Response } from "express";
 import ideasRoutes from "./routes/ideas.routes";
+import cors from "cors";
 
 const app = express();
+app.use(cors({
+  origin: "http://localhost:3000"
+}));
 
 app.use(express.json());
 app.use("/ideas", ideasRoutes);

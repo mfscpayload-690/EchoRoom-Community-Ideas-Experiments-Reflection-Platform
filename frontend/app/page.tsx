@@ -6,21 +6,38 @@ import Link from "next/link";
 export default function HomePage() {
   const [dark, setDark] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [backendStatus, setBackendStatus] = useState("Checking backend...");
+
 
   useEffect(() => {
-    setMounted(true);
-    const saved = localStorage.getItem("color-theme");
-    if (
-      saved === "dark" ||
-      (!saved && window.matchMedia("(prefers-color-scheme: dark)").matches)
-    ) {
-      document.documentElement.classList.add("dark");
-      setDark(true);
-    } else {
-      document.documentElement.classList.remove("dark");
-      setDark(false);
-    }
-  }, []);
+  setMounted(true);
+
+  // Theme logic
+  const saved = localStorage.getItem("color-theme");
+  if (
+    saved === "dark" ||
+    (!saved && window.matchMedia("(prefers-color-scheme: dark)").matches)
+  ) {
+    document.documentElement.classList.add("dark");
+    setDark(true);
+  } else {
+    document.documentElement.classList.remove("dark");
+    setDark(false);
+  }
+
+  // Backend connectivity test
+  fetch("http://localhost:5000/health")
+    .then(res => res.json())
+    .then(data => {
+      setBackendStatus("✅ Backend Connected: " + data.message);
+    })
+    .catch(err => {
+      setBackendStatus("❌ Backend Not Connected");
+      console.error(err);
+    });
+
+}, []);
+
 
   const toggleTheme = () => {
     const newDark = !dark;
@@ -64,15 +81,18 @@ export default function HomePage() {
         </div>
       </nav>
 
-      {/* HERO */}
-      <section className="max-w-4xl mx-auto text-center px-6 pt-24 pb-16">
-        <h1 className="text-5xl md:text-6xl font-bold text-slate-800 dark:text-white leading-tight">
-          Turn Ideas into
-          <span className="block text-blue-600 mt-2">Actionable Learning</span>
-        </h1>
-        <p className="mt-6 text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-          EchoRoom helps communities transform ideas into experiments, insights, and meaningful learning — collaboratively and transparently.
-        </p>
+{/* HERO */}
+<section className="max-w-4xl mx-auto text-center px-6 pt-24 pb-16">
+  <h1 className="text-5xl md:text-6xl font-bold text-slate-800 dark:text-white leading-tight">
+    Turn Ideas into
+    <span className="block text-blue-600 mt-2">Actionable Learning</span>
+  </h1>
+  <p className="mt-4 text-sm text-green-600 dark:text-green-400">
+    {backendStatus}
+  </p>
+  <p className="mt-4 text-lg text-slate-600 dark:text-slate-300">
+    EchoRoom helps communities transform ideas into experiments, insights, and meaningful learning — collaboratively and transparently.
+  </p>
         <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
           <Link href="/ideas" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-full shadow-lg transition hover:-translate-y-1 inline-block">
             Start Exploring →
