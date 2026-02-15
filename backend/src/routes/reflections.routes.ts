@@ -1,5 +1,4 @@
 import { Router, Request, Response } from "express";
-import { outcomes } from "./outcomes.routes";
 
 import {
   createReflection,
@@ -49,11 +48,19 @@ router.post("/", (req: Request, res: Response) => {
 
 // GET /reflections
 router.get("/", (_req: Request, res: Response) => {
-  return res.json({
-    success: true,
-    count: reflections.length,
-    data: reflections,
-  });
+  try {
+    const reflections = getAllReflections();
+    return res.json({
+      success: true,
+      count: reflections.length,
+      data: reflections,
+    });
+  } catch {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch reflections",
+    });
+  }
 });
 
 
