@@ -31,10 +31,7 @@ export const getExperimentById = (id: number): Experiment | null => {
 
 // Create experiment
 export const createExperiment = (
-  title: string,
-  description: string,
-  status: ExperimentStatus
-): Experiment => {
+title: string, description: string, status: ExperimentStatus, p0: string): Experiment => {
 
   const newExperiment: Experiment = {
     id: nextId++,

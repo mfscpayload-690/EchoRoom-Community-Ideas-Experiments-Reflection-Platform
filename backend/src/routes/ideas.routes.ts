@@ -7,6 +7,7 @@ import {
 } from "../services/ideas.service";
 
 const router = Router();
+
 // helper: validate non-empty string
 function isValidString(value: any): value is string {
   return typeof value === "string" && value.trim().length > 0;
@@ -18,29 +19,6 @@ function isValidStatus(status: any): status is IdeaStatus {
 }
 
 
-
-
-// Temporary in-memory storage
-interface Idea {
-  id: number;
-  title: string;
-  description: string;
-  status: IdeaStatus;
-
-}
-
-export let ideas: Idea[] = [];
-
-export let nextIdeaId = 1;
-// Define valid state transitions
-const allowedTransitions: Record<IdeaStatus, IdeaStatus[]> = {
-  proposed: ["experiment"],
-  experiment: ["outcome"],
-  outcome: ["reflection"],
-  reflection: [],
-};
-
-
 // GET /ideas
 router.get("/", (req: Request, res: Response) => {
   try {
@@ -50,23 +28,26 @@ router.get("/", (req: Request, res: Response) => {
       success: true,
       ideas,
     });
+
   } catch (error) {
-  console.error("Error:", error);
 
-  res.status(500).json({
-    success: false,
-    message: "Internal server error",
-  });
-}
+    console.error("Error:", error);
 
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+
+  }
 });
+
 
 // POST /ideas
 router.post("/", (req: Request, res: Response) => {
   try {
     const { title, description } = req.body;
 
-    if (!title || !description) {
+    if (!isValidString(title) || !isValidString(description)) {
       return res.status(400).json({
         success: false,
         message: "Title and description are required",
@@ -79,16 +60,19 @@ router.post("/", (req: Request, res: Response) => {
       success: true,
       idea: newIdea,
     });
+
   } catch (error) {
-  console.error("Error:", error);
 
-  res.status(500).json({
-    success: false,
-    message: "Internal server error",
-  });
-}
+    console.error("Error:", error);
 
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+
+  }
 });
+
 
 // PATCH /ideas/:id/status
 // PATCH /ideas/:id/status
@@ -137,25 +121,15 @@ router.patch("/:id/status", (req: Request, res: Response) => {
 
   } catch (error: any) {
 
-    if (error.message?.includes("Invalid transition")) {
-      return res.status(400).json({
-        success: false,
-        message: error.message,
-      });
-    }
-
     console.error("Error:", error);
 
     res.status(500).json({
       success: false,
-      message: "Internal server error",
+      message: error.message || "Internal server error",
     });
 
   }
-
 });
-
-
 
 
 export default router;
