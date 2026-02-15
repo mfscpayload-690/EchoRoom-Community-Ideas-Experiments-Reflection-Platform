@@ -1,28 +1,50 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import { PageLayout } from "../community/PageLayout";
 
 export default function ExperimentsPage() {
+  async function createExperiment() {
+
+  const res = await fetch("http://localhost:5000/experiments", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: "New Experiment",
+      description: "Created from frontend",
+      status: "active",
+    }),
+  });
+
+  const data = await res.json();
+
+  if (data.success) {
+    setExperiments([...experiments, data.data]);
+  }
+
+}
+
 
   // Sample experiment data
-  const experiments = [
-    {
-      title: "Landing Page Improvement",
-      description: "Test different hero section layouts to improve user engagement.",
-      status: "In Progress",
-      progress: 60,
-    },
-    {
-      title: "Community Onboarding Flow",
-      description: "Experiment with onboarding steps to increase retention.",
-      status: "Planned",
-      progress: 0,
-    },
-    {
-      title: "Idea Validation Survey",
-      description: "Collect structured feedback from early adopters.",
-      status: "Completed",
-      progress: 100,
-    },
-  ];
+  const [experiments, setExperiments] = useState<any[]>([]);
+const [loading, setLoading] = useState(true);
+
+useEffect(() => {
+  fetch("http://localhost:5000/experiments")
+    .then((res) => res.json())
+    .then((data) => {
+  setExperiments(data.data);
+  setLoading(false);
+})
+
+    .catch((err) => {
+      console.error("Failed to fetch experiments:", err);
+      setLoading(false);
+    });
+}, []);
+
 
 
   // Status color
@@ -60,7 +82,17 @@ export default function ExperimentsPage() {
 
 
         {/* Empty State */}
-        {experiments.length === 0 ? (
+        {/* Loading State */}
+{loading ? (
+
+  <div className="card text-center py-16">
+    <p className="text-gray-600 dark:text-gray-300">
+      Loading experiments...
+    </p>
+  </div>
+
+) : experiments.length === 0 ? (
+
 
           <div className="card text-center py-16">
 
@@ -72,9 +104,13 @@ export default function ExperimentsPage() {
               Start your first experiment to test and validate ideas.
             </p>
 
-            <button className="btn-primary">
-              Create Experiment
-            </button>
+            <button
+  className="btn-primary"
+  onClick={createExperiment}
+>
+  Create Experiment
+</button>
+
 
           </div>
 

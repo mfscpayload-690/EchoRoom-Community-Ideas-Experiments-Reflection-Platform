@@ -75,7 +75,9 @@ router.post("/", (req: Request, res: Response) => {
 
 
 // PATCH /ideas/:id/status
+// PATCH /ideas/:id/status
 router.patch("/:id/status", (req: Request, res: Response) => {
+
   try {
 
     const id = Number(req.params.id);
