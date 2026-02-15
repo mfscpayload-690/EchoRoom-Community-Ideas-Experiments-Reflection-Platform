@@ -1,6 +1,4 @@
 import { Router, Request, Response } from "express";
-import { ideas } from "./ideas.routes";
-
 
 import {
   getAllExperiments,
@@ -17,12 +15,25 @@ const router = Router();
 // GET all experiments
 router.get("/", (req: Request, res: Response) => {
 
-  const experiments = getAllExperiments();
+  try {
 
-  res.json({
-    success: true,
-    data: experiments,
-  });
+    const experiments = getAllExperiments();
+
+    res.json({
+      success: true,
+      data: experiments,
+    });
+
+  } catch (error) {
+
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+
+  }
 
 });
 
@@ -30,66 +41,78 @@ router.get("/", (req: Request, res: Response) => {
 // GET experiment by ID
 router.get("/:id", (req: Request, res: Response) => {
 
-  const id = Number(req.params.id);
+  try {
 
-  const experiment = getExperimentById(id);
+    const id = Number(req.params.id);
 
-  if (!experiment) {
-    return res.status(404).json({
-      success: false,
-      message: "Experiment not found",
+    const experiment = getExperimentById(id);
+
+    if (!experiment) {
+
+      return res.status(404).json({
+        success: false,
+        message: "Experiment not found",
+      });
+
+    }
+
+    res.json({
+      success: true,
+      data: experiment,
     });
-  }
 
-  res.json({
-    success: true,
-    data: experiment,
-  });
+  } catch (error) {
+
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+
+  }
 
 });
 
 
 // CREATE experiment
 router.post("/", (req: Request, res: Response) => {
-const { title, description, status } = req.body;
 
-if (!title || !description || !status) {
-  return res.status(400).json({
-    success: false,
-    message: "title, description, and status are required",
-  });
-}
+  try {
 
-const newExperiment = createExperiment(
-  title,
-  description,
-  status
-);
+    const { title, description, ideaId, status } = req.body;
 
-res.status(201).json({
-  success: true,
-  data: newExperiment,
-});
- main
+    if (!title || !description || !ideaId || !status) {
 
- if (!ideaId || !title || !description || !status) {
-    return res.status(400).json({
-      success: false,
-      message: "title, description, and status are required",
+      return res.status(400).json({
+        success: false,
+        message: "title, description, ideaId, and status are required",
+      });
+
+    }
+
+    const newExperiment = createExperiment(
+      title,
+      ideaId,
+      description,
+      status as ExperimentStatus
+    );
+
+    res.status(201).json({
+      success: true,
+      data: newExperiment,
     });
+
+  } catch (error) {
+
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+
   }
-
-  const newExperiment = createExperiment(
-    title,
-    ideaId,
-    description,
-    status as ExperimentStatus
-  );
-
-  res.status(201).json({
-    success: true,
-    data: newExperiment,
-  });
 
 });
 
@@ -97,21 +120,36 @@ res.status(201).json({
 // UPDATE experiment
 router.put("/:id", (req: Request, res: Response) => {
 
-  const id = Number(req.params.id);
+  try {
 
-  const updatedExperiment = updateExperiment(id, req.body);
+    const id = Number(req.params.id);
 
-  if (!updatedExperiment) {
-    return res.status(404).json({
-      success: false,
-      message: "Experiment not found",
+    const updatedExperiment = updateExperiment(id, req.body);
+
+    if (!updatedExperiment) {
+
+      return res.status(404).json({
+        success: false,
+        message: "Experiment not found",
+      });
+
+    }
+
+    res.json({
+      success: true,
+      data: updatedExperiment,
     });
-  }
 
-  res.json({
-    success: true,
-    data: updatedExperiment,
-  });
+  } catch (error) {
+
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+
+  }
 
 });
 
@@ -119,21 +157,36 @@ router.put("/:id", (req: Request, res: Response) => {
 // DELETE experiment
 router.delete("/:id", (req: Request, res: Response) => {
 
-  const id = Number(req.params.id);
+  try {
 
-  const deleted = deleteExperiment(id);
+    const id = Number(req.params.id);
 
-  if (!deleted) {
-    return res.status(404).json({
-      success: false,
-      message: "Experiment not found",
+    const deleted = deleteExperiment(id);
+
+    if (!deleted) {
+
+      return res.status(404).json({
+        success: false,
+        message: "Experiment not found",
+      });
+
+    }
+
+    res.json({
+      success: true,
+      message: "Experiment deleted",
     });
-  }
 
-  res.json({
-    success: true,
-    message: "Experiment deleted",
-  });
+  } catch (error) {
+
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+
+  }
 
 });
 
