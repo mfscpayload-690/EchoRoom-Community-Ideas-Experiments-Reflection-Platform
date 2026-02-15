@@ -5,6 +5,8 @@ import ErrorState from "../components/ErrorState";
 import { PageLayout } from "../community/PageLayout";
 import { useEffect, useState } from "react";
 import { apiFetch } from "../lib/api";
+import BackButton from "../components/BackButton";
+
 
 
 interface Idea {
@@ -62,9 +64,15 @@ if (error) {
   return (
     <PageLayout>
       <div className="section">
+      {/* <div className="mb-4 -mt-2">
+        <BackButton />
+      </div> */}
 
         {/* Header */}
         <div className="mb-8">
+          <div className="mb-4">
+              <BackButton />
+            </div>
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-3">
             Ideas in EchoRoom
           </h1>

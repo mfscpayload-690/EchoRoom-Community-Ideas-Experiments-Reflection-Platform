@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useTheme } from "./components/ThemeProvider";
+import Button from "./components/ui/Button";
+
 
 export default function HomePage() {
   const { dark, toggleTheme } = useTheme();
@@ -56,20 +58,61 @@ return (
 
       {/* Theme Toggle */}
       <button
-        onClick={toggleTheme}
-        className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition"
-        aria-label="Toggle theme"
-      >
-        {dark ? "☀️" : "🌙"}
-      </button>
+  onClick={toggleTheme}
+  aria-label="Toggle theme"
+  className="
+    flex items-center justify-center
+    w-11 h-11
+    rounded-full
+
+    bg-white/40 dark:bg-slate-800/60
+    backdrop-blur-md
+
+    border border-white/30 dark:border-slate-700
+
+    shadow-[0_4px_12px_rgba(0,0,0,0.12)]
+
+    transition-all duration-300
+
+    hover:scale-105
+    hover:shadow-[0_8px_18px_rgba(0,0,0,0.18)]
+    active:scale-95
+  "
+>
+  <span className="text-lg">
+    {dark ? "☀️" : "🌙"}
+  </span>
+</button>
+
 
      {/* Signup Link */}
-      <Link
-        href="/signup"
-        className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 rounded-md font-medium hover:shadow-lg transition"
-      >
-        Sign Up
-      </Link>
+    <Link href="/signup">
+  <button
+    className="
+      rounded-full
+      px-5 py-2.5
+      text-sm
+      font-normal
+      tracking-tight
+      text-white
+
+      bg-gradient-to-r from-blue-500 to-indigo-600
+      
+      
+      
+      transition-all duration-300
+      
+      hover:scale-[1.05]
+      
+      hover:from-blue-400 hover:to-indigo-500
+
+      active:scale-[0.96]
+    "
+  >
+    Sign Up
+  </button>
+</Link>
+
 
       {/* Login Link */}
       <Link
@@ -118,19 +161,46 @@ return (
   {/* Buttons */}
   <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
 
-    <Link
-      href="/ideas"
-      className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-3 rounded-full font-semibold shadow-md hover:shadow-xl hover:scale-105 transition duration-200 inline-block"
-    >
-      Start Exploring →
-    </Link>
+    <Link href="/ideas">
+  <Button
+  variant="primary"
+  className="
+    rounded-full
+    px-16 py-6
+    text-xl
+    font-normal
+    tracking-tight
+    
+  "
+>
+  Start Exploring 
+</Button>
 
-    <Link
-  href="/about"
-  className="px-8 py-3 rounded-full font-semibold border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition inline-block"
+</Link>
+
+
+<Link href="/about">
+  <Button
+  variant="outline"
+  className="
+    rounded-full
+    px-16 py-6
+    text-xl
+    font-normal
+    tracking-tight
+
+    bg-[#7EACB5]
+    backdrop-blur-xl
+    border border-white/20
+    text-white
+  "
 >
   Learn More
+</Button>
+
 </Link>
+
+
 
 
   </div>
@@ -174,12 +244,34 @@ return (
             Join EchoRoom and turn your ideas into meaningful experiments today.
             No credit card required.
           </p>
-          <Link
-            href="/community"
-            className="mt-6 bg-white text-blue-600 px-8 py-3 rounded-full font-semibold shadow hover:bg-gray-100 inline-block"
-          >
-            Get Started
-          </Link>
+         <Link href="/community" className="mt-10 inline-block">
+
+  <button
+    className="
+      px-12 py-4
+      rounded-full
+      font-normal
+      text-lg
+      text-slate-700
+      text-white
+      bg-white/30
+      backdrop-blur-xl
+      
+      border border-white/40
+      
+      shadow-[0_8px_30px_rgba(0,0,0,0.12)]
+      
+      transition-all duration-300
+      
+      hover:shadow-[0_12px_40px_rgba(0,0,0,0.18)]
+      hover:scale-[1.04]
+      active:scale-[0.97]
+    "
+  >
+    Get Started
+  </button>
+</Link>
+
         </div>
       </section>
 
