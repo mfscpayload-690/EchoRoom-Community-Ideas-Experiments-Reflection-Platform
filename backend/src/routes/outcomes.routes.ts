@@ -1,29 +1,23 @@
 import { Router, Request, Response } from "express";
+import { experiments } from "./experiments.routes";
+
+import {
+  createOutcome,
+  getAllOutcomes,
+  getOutcomesByExperimentId
+} from "../services/outcomes.service";
 
 const router = Router();
 
-// Outcome model (temporary in-memory)
-interface Outcome {
-  id: number;
-  experimentId: number;
-  result: string;
-  notes: string;
-  createdAt: Date;
-}
 
-// Temporary storage
-let outcomes: Outcome[] = [];
-let nextId = 1;
-
-
-/**
- * POST /outcomes
- * Create a new outcome
- */
+// POST /outcomes
 router.post("/", (req: Request, res: Response) => {
+
   try {
+
     const { experimentId, result, notes } = req.body;
 
+    // 1. Validate required fields
     if (!experimentId || !result) {
       return res.status(400).json({
         success: false,
@@ -31,60 +25,66 @@ router.post("/", (req: Request, res: Response) => {
       });
     }
 
-    const newOutcome: Outcome = {
-      id: nextId++,
+    const outcome = createOutcome(
       experimentId,
       result,
-      notes: notes || "",
-      createdAt: new Date(),
-    };
+      notes
+    );
 
-    outcomes.push(newOutcome);
-
-    res.status(201).json({
+    // 5. Return response
+    return res.status(201).json({
       success: true,
-      data: newOutcome,
+      data: outcome,
     });
 
-  } catch (error) {
+  } catch {
+
     res.status(500).json({
       success: false,
       message: "Failed to create outcome",
     });
+
   }
+
 });
 
 
-/**
- * GET /outcomes
- * Get all outcomes
- */
+// GET /outcomes
 router.get("/", (_req: Request, res: Response) => {
+  return res.json({
+    success: true,
+    count: outcomes.length,
+    data: outcomes,
+  });
+
+});
+
+
+// GET /outcomes/:experimentId
+router.get("/:experimentId", (req: Request, res: Response) => {
+  try {
+    const experimentId = Number(req.params.experimentId);
+
+    if (!experimentId) {
+      return res.status(400).json({
+        success: false,
+        message: "Valid experimentId is required",
+      });
+    }
+
+  const outcomes = getOutcomesByExperimentId(experimentId);
+
   res.json({
     success: true,
     data: outcomes,
   });
+
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch outcomes",
+    });
+  }
 });
-
-
-/**
- * GET /outcomes/:experimentId
- * Get outcomes for a specific experiment
- */
-router.get("/:experimentId", (req: Request, res: Response) => {
-
-  const experimentId = Number(req.params.experimentId);
-
-  const filtered = outcomes.filter(
-    outcome => outcome.experimentId === experimentId
-  );
-
-  res.json({
-    success: true,
-    data: filtered,
-  });
-
-});
-
 
 export default router;

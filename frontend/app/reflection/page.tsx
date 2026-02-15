@@ -8,9 +8,9 @@ const reflections = [
 ];
 
 const outcomeColors: Record<string, string> = {
-  Success: "text-green-400 bg-green-400/10",
-  Mixed: "text-yellow-400 bg-yellow-400/10",
-  Failed: "text-red-400 bg-red-400/10",
+  Success: "text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-900/30",
+  Mixed: "text-yellow-600 dark:text-yellow-400 bg-yellow-100 dark:bg-yellow-900/30",
+  Failed: "text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900/30",
 };
 
 const ReflectionPage = () => {
@@ -20,11 +20,11 @@ const ReflectionPage = () => {
       <div className="container py-16">
         <div className="max-w-3xl mx-auto">
           <div className="flex items-center gap-3 mb-6">
-            <BookOpen className="h-8 w-8 text-purple-400" />
-            <h1 className="text-4xl font-bold text-foreground">Reflection</h1>
+            <BookOpen className="h-8 w-8 text-purple-500 dark:text-purple-400" />
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white">Reflection</h1>
           </div>
 
-          <p className="text-lg text-muted-foreground mb-10">
+          <p className="text-lg text-gray-600 dark:text-gray-300 mb-10">
             Reflection is where learning becomes meaningful.
             Document your thoughts, insights, and lessons learned
             from ideas and experiments.
@@ -32,20 +32,20 @@ const ReflectionPage = () => {
 
           <div className="space-y-6">
             {reflections.map((ref, i) => (
-              <div key={i} className="bg-card border border-white/10 rounded-xl p-6 hover:border-primary/50 transition-colors">
+              <div key={i} className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl p-6 hover:border-blue-500 dark:hover:border-blue-400 transition-colors">
                 <div className="flex items-start justify-between mb-3">
-                  <h3 className="text-xl font-semibold text-foreground">{ref.title}</h3>
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{ref.title}</h3>
                   <span className={`text-xs font-medium px-3 py-1 rounded-full ${outcomeColors[ref.outcome]}`}>
                     {ref.outcome}
                   </span>
                 </div>
-                <div className="bg-secondary/30 border-l-4 border-primary rounded-r-lg p-4 mb-4">
+                <div className="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 dark:border-blue-400 rounded-r-lg p-4 mb-4">
                   <div className="flex items-start gap-2">
-                    <MessageSquare className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                    <p className="text-sm text-foreground/80 italic">"{ref.learning}"</p>
+                    <MessageSquare className="w-4 h-4 text-blue-600 dark:text-blue-400 mt-0.5 shrink-0" />
+                    <p className="text-sm text-gray-700 dark:text-gray-300 italic">"{ref.learning}"</p>
                   </div>
                 </div>
-                <div className="flex justify-between text-xs text-muted-foreground">
+                <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
                   <span>By {ref.author}</span>
                   <span>{ref.date}</span>
                 </div>
@@ -53,8 +53,8 @@ const ReflectionPage = () => {
             ))}
           </div>
 
-          <div className="mt-10 bg-card border border-white/10 rounded-xl p-6 text-center">
-            <p className="text-muted-foreground">More reflection features will be available here soon.</p>
+          <div className="mt-10 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl p-6 text-center">
+            <p className="text-gray-600 dark:text-gray-300">More reflection features will be available here soon.</p>
           </div>
         </div>
       </div>

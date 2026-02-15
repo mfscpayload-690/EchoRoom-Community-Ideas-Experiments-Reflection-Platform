@@ -6,7 +6,7 @@ interface PageLayoutProps {
 
 export const PageLayout = ({ children }: PageLayoutProps) => {
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex flex-col transition-colors">
 
       <Navbar />
 

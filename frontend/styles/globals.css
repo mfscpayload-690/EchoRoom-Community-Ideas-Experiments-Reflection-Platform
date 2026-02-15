@@ -23,15 +23,15 @@ body {
 @layer components {
 
   .page-title {
-    @apply text-4xl font-bold text-gray-900 mb-3;
+    @apply text-4xl font-bold text-gray-900 dark:text-white mb-3;
   }
 
   .page-description {
-    @apply text-lg text-gray-600 mb-8 max-w-2xl;
+    @apply text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-2xl;
   }
 
   .card {
-    @apply bg-white border border-gray-200 rounded-xl p-6 shadow-sm;
+    @apply bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl p-6 shadow-sm;
   }
 
   .btn-primary {
@@ -39,7 +39,7 @@ body {
   }
 
   .btn-secondary {
-    @apply border border-gray-300 text-gray-700 px-5 py-2 rounded-lg hover:bg-gray-100 transition;
+    @apply border border-gray-300 dark:border-slate-600 text-gray-700 dark:text-gray-300 px-5 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 transition;
   }
 
   .section {

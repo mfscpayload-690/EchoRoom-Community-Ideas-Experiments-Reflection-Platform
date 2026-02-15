@@ -2,55 +2,23 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useTheme } from "./components/ThemeProvider";
 
 export default function HomePage() {
-  const [dark, setDark] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const { dark, toggleTheme } = useTheme();
   const [backendStatus, setBackendStatus] = useState("Checking backend...");
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-  setMounted(true);
-
-  const savedTheme = localStorage.getItem("color-theme");
-
-  if (savedTheme === "dark") {
-    document.documentElement.classList.add("dark");
-    setDark(true);
-  } else if (savedTheme === "light") {
-    document.documentElement.classList.remove("dark");
-    setDark(false);
-  } else {
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    if (prefersDark) {
-      document.documentElement.classList.add("dark");
-      setDark(true);
-    }
-  }
-
-  fetch("http://localhost:5000/health")
-    .then((res) => res.json())
-    .then((data) => {
-      setBackendStatus("✅ Backend Connected: " + data.message);
-    })
-    .catch(() => {
-      setBackendStatus("❌ Backend Not Connected");
-    });
-}, []);
-
-
-  const toggleTheme = () => {
-    const newDark = !dark;
-    if (newDark) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("color-theme", "dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("color-theme", "light");
-    }
-    setDark(newDark);
-  };
-if (!mounted) return null;
+    fetch("http://localhost:5000/health")
+      .then((res) => res.json())
+      .then((data) => {
+        setBackendStatus("✅ Backend Connected: " + data.message);
+      })
+      .catch(() => {
+        setBackendStatus("❌ Backend Not Connected");
+      });
+  }, []);
 
 return (
 
@@ -92,7 +60,7 @@ return (
         className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition"
         aria-label="Toggle theme"
       >
-        {mounted ? (dark ? "☀️" : "🌙") : "🌙"}
+        {dark ? "☀️" : "🌙"}
       </button>
 
      {/* Signup Link */}

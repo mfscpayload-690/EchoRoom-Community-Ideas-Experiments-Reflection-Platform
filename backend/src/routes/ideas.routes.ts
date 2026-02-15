@@ -1,6 +1,22 @@
 import { Router, Request, Response } from "express";
+import {
+  getAllIdeas,
+  createIdea,
+  updateIdeaStatus,
+  IdeaStatus
+} from "../services/ideas.service";
 
 const router = Router();
+// helper: validate non-empty string
+function isValidString(value: any): value is string {
+  return typeof value === "string" && value.trim().length > 0;
+}
+
+// helper: validate IdeaStatus
+function isValidStatus(status: any): status is IdeaStatus {
+  return ["proposed", "experiment", "outcome", "reflection"].includes(status);
+}
+
 
 // Allowed lifecycle states
 type IdeaStatus = "proposed" | "experiment" | "outcome" | "reflection";
@@ -11,13 +27,13 @@ interface Idea {
   id: number;
   title: string;
   description: string;
-  status: string;
   status: IdeaStatus;
 
 }
 
-let ideas: Idea[] = [];
-let nextId = 1;
+export let ideas: Idea[] = [];
+
+export let nextIdeaId = 1;
 // Define valid state transitions
 const allowedTransitions: Record<IdeaStatus, IdeaStatus[]> = {
   proposed: ["experiment"],
@@ -30,16 +46,21 @@ const allowedTransitions: Record<IdeaStatus, IdeaStatus[]> = {
 // GET /ideas
 router.get("/", (req: Request, res: Response) => {
   try {
+    const ideas = getAllIdeas();
+
     res.json({
       success: true,
-      ideas: ideas,
+      ideas,
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to fetch ideas",
-    });
-  }
+  console.error("Error:", error);
+
+  res.status(500).json({
+    success: false,
+    message: "Internal server error",
+  });
+}
+
 });
 
 // POST /ideas
@@ -47,7 +68,6 @@ router.post("/", (req: Request, res: Response) => {
   try {
     const { title, description } = req.body;
 
-    // validation
     if (!title || !description) {
       return res.status(400).json({
         success: false,
@@ -55,48 +75,74 @@ router.post("/", (req: Request, res: Response) => {
       });
     }
 
-    const newIdea: Idea = {
-      id: nextId++,
-      title,
-      description,
-      status: "proposed",
-    };
-
-    ideas.push(newIdea);
+    const newIdea = createIdea(title, description);
 
     res.status(201).json({
       success: true,
       idea: newIdea,
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to create idea",
-    });
-  }
+  console.error("Error:", error);
+
+  res.status(500).json({
+    success: false,
+    message: "Internal server error",
+  });
+}
+
 });
+
 // PATCH /ideas/:id/status
 router.patch("/:id/status", (req: Request, res: Response) => {
   try {
     const id = Number(req.params.id);
-    const { status } = req.body as { status: IdeaStatus };
 
-    const idea = ideas.find(i => i.id === id);
+    // NEW: validate ID format
+    if (isNaN(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid idea ID",
+      });
+    }
 
-    if (!idea) {
+const { status } = req.body;
+
+// validate status exists
+if (!status) {
+  return res.status(400).json({
+    success: false,
+    message: "Status is required",
+  });
+}
+
+// validate status value
+if (!isValidStatus(status)) {
+  return res.status(400).json({
+    success: false,
+    message: "Invalid status value",
+  });
+}
+
+    const updatedIdea = updateIdeaStatus(id, status);
+
+    if (!updatedIdea) {
       return res.status(404).json({
         success: false,
         message: "Idea not found",
       });
     }
 
-    // validate transition
-    const allowed = allowedTransitions[idea.status];
+    res.json({
+      success: true,
+      idea: updatedIdea,
+    });
 
-    if (!allowed.includes(status)) {
+  } catch (error: any) {
+
+    if (error.message.includes("Invalid transition")) {
       return res.status(400).json({
         success: false,
-        message: `Invalid transition from '${idea.status}' to '${status}'`,
+        message: error.message,
       });
     }
 
@@ -108,12 +154,16 @@ router.patch("/:id/status", (req: Request, res: Response) => {
     });
 
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to update idea status",
-    });
-  }
+  console.error("Error:", error);
+
+  res.status(500).json({
+    success: false,
+    message: "Internal server error",
+  });
+}
+
 });
+
 
 
 export default router;

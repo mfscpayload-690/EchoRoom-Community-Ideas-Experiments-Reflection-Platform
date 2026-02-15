@@ -27,9 +27,9 @@ export default function ExperimentsPage() {
 
   // Status color
   const getStatusTextColor = (status: string) => {
-    if (status === "Completed") return "text-green-600";
-    if (status === "In Progress") return "text-blue-600";
-    return "text-gray-600";
+    if (status === "Completed") return "text-green-600 dark:text-green-400";
+    if (status === "In Progress") return "text-blue-600 dark:text-blue-400";
+    return "text-gray-600 dark:text-gray-400";
   };
 
   // Progress bar color
@@ -46,13 +46,13 @@ export default function ExperimentsPage() {
       <div className="section">
 
         {/* Header */}
-        <div className="section">
+        <div className="mb-8">
 
-          <h1 className="page-title">
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-3">
             Experiments
           </h1>
 
-          <p className="page-description">
+          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl">
             Track and manage experiments to test ideas and learn quickly.
           </p>
 
@@ -64,11 +64,11 @@ export default function ExperimentsPage() {
 
           <div className="card text-center py-16">
 
-            <h2 className="text-2xl font-semibold mb-2">
+            <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-2">
               No experiments yet
             </h2>
 
-            <p className="text-gray-600 mb-4">
+            <p className="text-gray-600 dark:text-gray-300 mb-4">
               Start your first experiment to test and validate ideas.
             </p>
 
@@ -87,11 +87,11 @@ export default function ExperimentsPage() {
 
               <div key={index} className="card">
 
-                <h2 className="text-xl font-semibold mb-2">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                   {exp.title}
                 </h2>
 
-                <p className="text-gray-600 mb-4">
+                <p className="text-gray-600 dark:text-gray-300 mb-4">
                   {exp.description}
                 </p>
 
@@ -103,7 +103,7 @@ export default function ExperimentsPage() {
                     Status: {exp.status}
                   </span>
 
-                  <span className="text-sm text-gray-500">
+                  <span className="text-sm text-gray-500 dark:text-gray-400">
                     {exp.progress}%
                   </span>
 
@@ -111,7 +111,7 @@ export default function ExperimentsPage() {
 
 
                 {/* Progress bar */}
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-2">
 
                   <div
                     className={`h-2 rounded-full ${getProgressColor(exp.status)}`}
